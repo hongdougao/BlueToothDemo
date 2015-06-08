@@ -7,9 +7,12 @@
 //
 
 #import "XXPeripheralViewController.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 
-@interface XXPeripheralViewController ()
- @end
+@interface XXPeripheralViewController() <CBPeripheralDelegate,CBPeripheralManagerDelegate>
+
+@property (nonatomic,strong)CBPeripheralManager *peripheralManager;
+@end
 
 @implementation XXPeripheralViewController
 
@@ -22,7 +25,44 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (IBAction)startClick:(id)sender {
+    _peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
+}
+- (IBAction)startTransfer:(id)sender {
+    
+}
+-(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
+    /*	CBPeripheralManagerStateUnknown = 0,
+     CBPeripheralManagerStateResetting,
+     CBPeripheralManagerStateUnsupported,
+     CBPeripheralManagerStateUnauthorized,
+     CBPeripheralManagerStatePoweredOff,
+     CBPeripheralManagerStatePoweredOn,
+     */
+    int state = peripheral.state;
+    switch (state) {
+        case CBPeripheralManagerStateUnknown:
+            NSLog(@"state : CBPeripheralManagerStateUnknown");
+            break;
+        case CBPeripheralManagerStateResetting:
+            NSLog(@"state : CBPeripheralManagerStateResetting");
+            break;
+        case CBPeripheralManagerStateUnsupported:
+            NSLog(@"state : CBPeripheralManagerStateUnsupported");
+            break;
+        case CBPeripheralManagerStateUnauthorized:
+            NSLog(@"state : CBPeripheralManagerStateUnauthorized");
+            break;
+        case CBPeripheralManagerStatePoweredOff:
+            NSLog(@"state : CBPeripheralManagerStatePoweredOff");
+            break;
+        case CBPeripheralManagerStatePoweredOn:
+            NSLog(@"state : CBPeripheralManagerStatePoweredOn");
+            break;
+        default:
+            break;
+    }
+}
 /*
 #pragma mark - Navigation
 

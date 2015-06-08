@@ -8,7 +8,7 @@
 
 #import "BlueToothManager.h"
 #import <CoreBluetooth/CoreBluetooth.h>
-@interface  BlueToothManager()<CBCentralManagerDelegate,CBPeripheralDelegate,CBPeripheralManagerDelegate>{
+@interface  BlueToothManager()<CBCentralManagerDelegate>{
     /*外围设备和中央设备在CoreBluetooth中使用CBPeripheralManager和CBCentralManager表示。
      
      CBPeripheralManager：外围设备通常用于发布服务、生成数据、保存数据。外围设备发布并广播服务，告诉周围的中央设备它的可用服务和特征。
