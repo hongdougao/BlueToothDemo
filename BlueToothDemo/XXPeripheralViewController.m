@@ -72,6 +72,11 @@
     if ([request.characteristic.UUID isEqual:myCharacteristic.UUID]) {
         
     }
+    
+    if (request.offset > myCharacteristic.value.length) {
+        [myPeripheralManager respondToRequest:request withResult:CBATTErrorInvalidOffset];
+        return;
+    }
 
 }
 
