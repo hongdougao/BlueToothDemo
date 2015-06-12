@@ -67,6 +67,13 @@
     }
 
 }
+-(void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
+    NSLog(@"外设接收到了请求：%s",__FUNCTION__);
+    if ([request.characteristic.UUID isEqual:myCharacteristic.UUID]) {
+        
+    }
+
+}
 
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
     /*	CBPeripheralManagerStateUnknown = 0,
