@@ -75,11 +75,40 @@
     
     if (request.offset > myCharacteristic.value.length) {
         [myPeripheralManager respondToRequest:request withResult:CBATTErrorInvalidOffset];
+        
+        request.value = [myCharacteristic.value subdataWithRange:NSMakeRange(request.offset, myCharacteristic.value.length -  request.offset)];//取得值
+        
+        [myPeripheralManager respondToRequest:request withResult:CBATTErrorSuccess];//回应请求
+        
+        //写特征
+        myCharacteristic.value = request.value;
+        
+        NSMutableArray *requests;
+        //发送一个数组 给请求
+        [myPeripheralManager respondToRequest:[requests objectAtIndex:0] withResult:CBATTErrorSuccess];
+        
+        
         return;
     }
 
 }
-
+//信息被外设中心订阅时调用的方法 用这个方法像一个线索一样来更新中心设备的值
+-(void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic{
+    NSLog(@"central subscribed to chacteristic :%@",characteristic);
+    
+    NSString * str = @"updata value For central";
+    NSData * updatedValue = [str dataUsingEncoding:NSUTF8StringEncoding];
+    
+    BOOL didSendValue = [myPeripheralManager updateValue:updatedValue forCharacteristic:characteristic onSubscribedCentrals:nil];
+    
+    if (didSendValue) {
+        NSLog(@"发送成功");
+    }else{
+        NSLog(@"发送失败");
+    }
+    
+    
+}
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
     /*	CBPeripheralManagerStateUnknown = 0,
      CBPeripheralManagerStateResetting,
